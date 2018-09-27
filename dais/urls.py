@@ -31,14 +31,24 @@ urlpatterns = [
         name="login"
     ),
     re_path(
+        r'^signup/$',
+        views.signup,
+        name="signup"
+    ),
+    re_path(
         r'^logout/$',
         auth_views.LogoutView.as_view(),
         name="logout"
     ),
     re_path(
-        r'ajax/upvote/$',
+        r'^ajax/upvote/$',
         views.upvote,
         name="upvote"
-    )
+    ),
+    re_path(
+        r'^$',
+        views.redirect_homepage,
+        name="redirect"
+    ),
 
 ]

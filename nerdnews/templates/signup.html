@@ -1,0 +1,16 @@
+<html>
+  {% include "header.html" %}
+  <body>
+    <div id="app">
+      {% include "navbar.html" %}
+      <div class="news-view view">
+        <form class="news-item m-t-3" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+
