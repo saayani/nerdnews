@@ -75,6 +75,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nerdnews.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

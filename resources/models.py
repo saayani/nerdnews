@@ -16,10 +16,11 @@ class Link(Base):
     url = models.URLField('URL', max_length=200, blank=True)
     text = models.TextField('text', max_length=255, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    host = models.CharField('host', max_length=200, blank=True)
+    score = models.PositiveIntegerField(default=0)
+
 
 class Vote(models.Model):
     """ Model to save the vote on a link Item """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     link =  models.ForeignKey(Link, on_delete=models.CASCADE)
-
-

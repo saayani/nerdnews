@@ -1,0 +1,21 @@
+<html>
+  {% include "header.html" %}
+  <body>
+    <div id="app">
+      {% include "navbar.html" %}
+      <form method="POST">
+        {% csrf_token %}
+        <p>
+          <label>Username</label>
+          <input type="text" name="username">
+        </p>
+        <p>
+          <label>Password</label>
+          <input type="password" name="password">
+        </p>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </body>
+</html>
+

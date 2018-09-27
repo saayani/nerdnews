@@ -1,11 +1,11 @@
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path, re_path, include
 
 from .views import top as dais_top
 from .views import new as dais_new
 from .views import submit as dais_submit
 from .views import user as dais_user
-from .views import login as dais_login
 
 urlpatterns = [
     re_path(
@@ -30,7 +30,12 @@ urlpatterns = [
     ),
     re_path(
         r'^login/$',
-        dais_login,
-        name='login'
+        auth_views.LoginView.as_view(template_name="login.html"),
+        name="login"
     ),
+    re_path(
+        r'^logout/$',
+        auth_views.LogoutView.as_view(),
+        name="logout"
+    )
 ]
