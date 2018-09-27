@@ -5,5 +5,28 @@
       {% include "navbar.html" %}
       {% include "list.html" %}
     </div>
-  </body
+  </body>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script>
+    $(".upvote").on("click", function () {
+      var $this = $(this);
+      var itemId = $this.attr('data-id');
+
+      $.ajax({
+        url: '{% url "upvote" %}',
+        data: {
+          'item_id': itemId
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data);
+          console.log(data.vote);
+          if (data.vote) {
+            $('#item-'+itemId).text(data.vote);
+          }
+        }
+      });
+
+    });
+  </script>
 </html>

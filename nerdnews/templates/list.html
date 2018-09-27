@@ -1,15 +1,17 @@
-<div class="news-list">
-  <ul>
-  {% for item in news_items %}
-    <li class="news-item">
-      <span class="score">{{ item.score }}</span>
-      <span class="title">
-        <a href="{{ item.link }}" target="_blank" rel="noopener"> {{ item.title }} </a>
-        <span class="host"> {{ item.host }}</span>
-      </span>
-      <br>
-      <span class="meta">
-        <span class="by">by <a href="/u/{{ item.user }}" class="">{{ item.user }}</a></span><span class="time"> {{ item.humanize_time }} </span><span class="comments-link">| <a href="/i/{{ item.id }}" class="">{{ item.num_comments }} comments</a></span></span>
-    </li>
-  {% endfor %}
+<div class="news-view view">
+  <div class="news-list">
+    <ul>
+    {% for item in news_items %}
+      <li class="news-item">
+        <span id="item-{{item.id}}" class="score">{{ item.score }}</span>
+        <span class="title">
+          <a href="{{ item.link }}" target="_blank" rel="noopener"> {{ item.title }} </a>
+          <span class="host"> {{ item.host }}</span>
+        </span>
+        <br>
+        <span class="meta">
+          <span class="by">by <a href="/u/{{ item.user }}" class="">{{ item.user }}</a></span><span class="time"> {{ item.humanize_time }} </span><span class="comments-link">| <a href="/i/{{ item.id }}" class="">{{ item.num_comments }} comments</a></span></span>{% if request.user.is_authenticated %}| <a href="#" data-id="{{ item.id }}" class="upvote meta"> Upvote</a>{% endif %}
+      </li>
+    {% endfor %}
+  </div>
 </div>
