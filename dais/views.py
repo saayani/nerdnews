@@ -41,7 +41,13 @@ def top(request):
 
 def new(request):
     template = "new.html"
-    news_items = Link.objects.all()
+
+    news_items = Link.objects.all().order_by('-timestamp').values()
+    for news_item in news_items:
+        user_id = news_item.get('user_id')
+        news_item['user'] = User.objects.get(id=user_id)
+        news_item['score'] = Vote.objects.filter(
+                link_id=news_item['id']).count()
 
     context = {
         'news_items': news_items,
