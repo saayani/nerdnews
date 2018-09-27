@@ -5,7 +5,9 @@ from django.http import JsonResponse
 from django import forms
 
 from resources.models import Link, Vote
-from dais.forms import SignupForm
+from dais.forms import SignupForm, SubmitForm
+
+import tldextract
 
 
 def redirect_homepage(request):
@@ -68,6 +70,32 @@ def new(request):
 def submit(request):
     template = "submit.html"
 
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
+    if request.method == 'POST':
+        form = SubmitForm(request.POST)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            title = cleaned_data['title']
+            url = cleaned_data['url']
+
+            link = Link.objects.filter(user=request.user, url=url)
+            if not link:
+
+                parsed_url = tldextract.extract(url)
+                host = '.'.join([parsed_url.domain, parsed_url.suffix])
+
+                link_obj = Link(
+                    title=title, url=url, user=request.user, host=host)
+                link_obj.save()
+                return HttpResponseRedirect('/')
+            else:
+                raise forms.ValidationError('Looks like this link exists')
+    else:
+        form = SubmitForm()
+    return render(request, 'submit.html', {'form' : form})
+
     context = {
         'news_items': news_items,
         'submit_active': True,
@@ -115,6 +143,8 @@ def upvote(request):
 
 
 def signup(request):
+    template = "signup.html"
+
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('top'))
 
@@ -125,13 +155,19 @@ def signup(request):
             username = userObj['username']
             email =  userObj['email']
             password =  userObj['password']
-            if not (User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists()):
+            if not (
+                User.objects.filter(username=username).exists() or
+                User.objects.filter(email=email).exists()):
+
                 User.objects.create_user(username, email, password)
                 user = authenticate(username = username, password = password)
                 login(request, user)
                 return HttpResponseRedirect('/')
             else:
-                raise forms.ValidationError('Looks like a username with that email or password already exists')
+                raise forms.ValidationError(
+                     'Looks like a username with that email'
+                     'or password already exists'
+                )
     else:
         form = SignupForm()
-    return render(request, 'signup.html', {'form' : form})
+    return render(request, template, {'form' : form})
