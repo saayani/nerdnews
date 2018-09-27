@@ -2,30 +2,27 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, re_path, include
 
-from .views import top as dais_top
-from .views import new as dais_new
-from .views import submit as dais_submit
-from .views import user as dais_user
+from dais import views
 
 urlpatterns = [
     re_path(
         r'^top/$',
-        dais_top,
+        views.top,
         name='top'
     ),
     re_path(
         r'^new/$',
-        dais_new,
+        views.new,
         name='new'
     ),
     re_path(
         r'^submit/$',
-        dais_submit,
+        views.submit,
         name='submit'
     ),
     re_path(
         r'^user/$',
-        dais_user,
+        views.user,
         name='user'
     ),
     re_path(
@@ -37,5 +34,11 @@ urlpatterns = [
         r'^logout/$',
         auth_views.LogoutView.as_view(),
         name="logout"
+    ),
+    re_path(
+        r'ajax/upvote/$',
+        views.upvote,
+        name="upvote"
     )
+
 ]
