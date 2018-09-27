@@ -21,9 +21,8 @@
         url: url,
         type: 'GET',
         success: function(data) {
-          debugger;
           match = data.match(/<title[^>]*>([^<]+)<\/title>/)[1];
-          if !$('#id_title').val() {
+          if (!$('#id_title').val()) {
             $('#id_title').val(unescape(match));
           }
         }
