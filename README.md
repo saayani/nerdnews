@@ -12,6 +12,6 @@ Features
 To be implemented
 -----------------
 - Comments
-- Pagination
 - Better Rating
 - Karma
+- Update ordering on upvote
