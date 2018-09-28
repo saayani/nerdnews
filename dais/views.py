@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.http import JsonResponse
 from django import forms
@@ -14,7 +15,7 @@ def redirect_homepage(request):
     return HttpResponseRedirect(reverse('top'))
 
 
-def top(request):
+def top(request, page=1):
     template = "top.html"
     news_items = Link.objects.all().values()
 
@@ -26,9 +27,27 @@ def top(request):
 
     news_items = sorted(news_items, key=lambda k: k['score'], reverse=True)
 
+    # Working on the Pagination for the first time. Learnt from here
+    # https://docs.djangoproject.com/en/dev/topics/pagination/#example
+    p = Paginator(news_items, 10)
+    page_num = p.page(page)
+    news_items = page_num.object_list
+    has_next = page_num.has_next()
+    has_prev = page_num.has_previous()
+    num_pages = p.num_pages
+    prev_page = page - 1
+    next_page = page + 1
+
+
     context = {
         'news_items': news_items,
         'top_active': True,
+        'num_pages': num_pages,
+        'has_prev': has_prev,
+        'has_next': has_next,
+        'prev_page': prev_page,
+        'next_page': next_page,
+        'page': page
     }
 
     if request.user.is_authenticated:
@@ -41,10 +60,22 @@ def top(request):
     )
 
 
-def new(request):
+def new(request, page=1):
     template = "new.html"
 
     news_items = Link.objects.all().order_by('-timestamp').values()
+
+    # Working on the Pagination for the first time. Learnt from here
+    # https://docs.djangoproject.com/en/dev/topics/pagination/#example
+    p = Paginator(news_items, 10)
+    page_num = p.page(page)
+    news_items = page_num.object_list
+    has_next = page_num.has_next()
+    has_prev = page_num.has_previous()
+    num_pages = p.num_pages
+    prev_page = page - 1
+    next_page = page + 1
+
     for news_item in news_items:
         user_id = news_item.get('user_id')
         news_item['user'] = User.objects.get(id=user_id)
@@ -54,6 +85,12 @@ def new(request):
     context = {
         'news_items': news_items,
         'new_active': True,
+        'num_pages': num_pages,
+        'has_prev': has_prev,
+        'has_next': has_next,
+        'prev_page': prev_page,
+        'next_page': next_page,
+        'page': page
     }
 
     if request.user.is_authenticated:

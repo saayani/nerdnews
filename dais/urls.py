@@ -10,6 +10,11 @@ urlpatterns = [
         views.top,
         name='top'
     ),
+    path(
+        r'top/<int:page>/',
+        views.top,
+        name='top'
+    ),
     re_path(
         r'^new/$',
         views.new,

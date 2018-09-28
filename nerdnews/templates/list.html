@@ -14,4 +14,5 @@
       </li>
     {% endfor %}
   </div>
+  <div class="news-list-nav"><a {% if has_prev %} href="{% url 'top' prev_page %}" {% else %} class="disabled" {% endif %}>&lt; prev</a><span>{{ page }}/{{ num_pages }}</span><a {% if has_next %} href="{% url 'top' next_page %}" {% else %} class="disabled" {% endif %}>more &gt;</a></div>
 </div>

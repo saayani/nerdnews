@@ -19,8 +19,6 @@
         },
         dataType: 'json',
         success: function (data) {
-          console.log(data);
-          console.log(data.vote);
           if (data.vote) {
             $('#item-'+itemId).text(data.vote);
           }
