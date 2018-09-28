@@ -15,3 +15,17 @@ To be implemented
 - Better Rating
 - Karma
 - Update ordering on upvote
+
+Setup
+-----
+
+```
+python3 -m venv nerdnewsvenv
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py collectstatic
+python manage.py runserver
+```
+
+Go ahead and hit http://localhost:8000/ on your browser
